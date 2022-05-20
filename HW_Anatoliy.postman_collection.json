@@ -1,0 +1,314 @@
+{
+	"info": {
+		"_postman_id": "018a19ca-e68b-41a8-88cf-8e63523c0d0d",
+		"name": "Anatoliy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let req_sal = pm.request.url.query.get('salary') \r",
+							"// console.log(req_sal)\r",
+							"let resp_sal = pm.response.json().salary\r",
+							"console.log(resp_sal)\r",
+							"for(let i = 0; i <= resp_sal.length-1; i++){\r",
+							"    pm.test(`req_sal*${i+1} ${req_sal} == resp_sal ${resp_sal[i]}`, function(){\r",
+							"        pm.expect(+req_sal*(i+1)).to.eql(+resp_sal[i])\r",
+							"        // console.log(req_sal*(i+1))\r",
+							"    })\r",
+							"}\r",
+							"\r",
+							"resp_sal.forEach((el, i) =>{\r",
+							"    pm.test(`req_sal*${i+1} ${req_sal} == resp_sal ${el}`, function(){\r",
+							"    pm.expect(+req_sal*(i+1)).to.eql(+el)\r",
+							"    })\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://162.55.220.72:5005/object_info_4\n?name=Dmitriy&age=30&salary=1000",
+					"protocol": "http",
+					"host": [
+						"162",
+						"55",
+						"220",
+						"72"
+					],
+					"port": "5005",
+					"path": [
+						"object_info_4\n"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Dmitriy"
+						},
+						{
+							"key": "age",
+							"value": "30"
+						},
+						{
+							"key": "salary",
+							"value": "1000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let req_sal = +pm.request.url.query.get('salary') \r",
+							"let req_age = +pm.request.url.query.get('age') \r",
+							"let req_name = pm.request.url.query.get('name') \r",
+							"// console.log(req_age)\r",
+							"// console.log(req_name)\r",
+							"// console.log(req_sal)\r",
+							"const req_object = {\r",
+							"    name : req_name,\r",
+							"    age : req_age,\r",
+							"    salary : req_sal\r",
+							"}\r",
+							"// console.log(req_object)\r",
+							"// let resp_sal = +pm.response.json().salary\r",
+							"// let resp_name = pm.response.json().name\r",
+							"// let resp_age = +pm.response.json().age\r",
+							"\r",
+							"// const resp_object = {\r",
+							"//     name : resp_name,\r",
+							"//     age : resp_age,\r",
+							"//     salary : resp_sal\r",
+							"// }\r",
+							"// console.log(resp_object)\r",
+							"\r",
+							"const resp_object = {}\r",
+							"\r",
+							"for(key in req_object){\r",
+							"    if(!isNaN(pm.response.json()[key])){\r",
+							"    resp_object[key] = +pm.response.json()[key]\r",
+							"    }else\r",
+							"    resp_object[key] = pm.response.json()[key]\r",
+							"}\r",
+							"\r",
+							"pm.test(`Resp_obj == req_object`, function(){\r",
+							"    pm.expect(req_object).to.deep.equal(resp_object)\r",
+							"})\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://162.55.220.72:5005/object_info_3?name=Dmitriy&age=30&salary=1000",
+					"protocol": "http",
+					"host": [
+						"162",
+						"55",
+						"220",
+						"72"
+					],
+					"port": "5005",
+					"path": [
+						"object_info_3"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Dmitriy"
+						},
+						{
+							"key": "age",
+							"value": "30"
+						},
+						{
+							"key": "salary",
+							"value": "1000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let arr = []\r",
+							"const resp = pm.response.json()\r",
+							"\r",
+							"for(const key in resp){\r",
+							"    arr.push(key)\r",
+							"}\r",
+							"console.log(arr)\r",
+							"\r",
+							"arr.forEach((el) => {\r",
+							"    pm.test(`Response has == ${el}`, function(){\r",
+							"        pm.expect(resp).to.have.property(el)\r",
+							"    })\r",
+							"})\r",
+							"\r",
+							"const count = ['', 3.3, 2.7, 3.8, 2, 1]\r",
+							"\r",
+							"arr.forEach((el, i) => {\r",
+							"    if(el != 'person')\r",
+							"    pm.test(`Response has == ${el}`, function(){\r",
+							"        pm.expect(+resp[el]).to.equal(1000*count[i])\r",
+							"    })\r",
+							"})\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Dmitriy",
+							"type": "text"
+						},
+						{
+							"key": "age",
+							"value": "30",
+							"type": "text"
+						},
+						{
+							"key": "salary",
+							"value": "1000",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://162.55.220.72:5005/user_info_2",
+					"protocol": "http",
+					"host": [
+						"162",
+						"55",
+						"220",
+						"72"
+					],
+					"port": "5005",
+					"path": [
+						"user_info_2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4v2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let arr = []\r",
+							"const resp = pm.response.json()\r",
+							"const salary = 1000\r",
+							"\r",
+							"const counters = { \r",
+							"    'person': '',\r",
+							"    'start_qa_salary': 1,\r",
+							"    'qa_salary_after_6_months': 2,\r",
+							"    'qa_salary_after_12_months': 2.7,\r",
+							"    'qa_salary_after_1.5_year': 3.3,\r",
+							"    'qa_salary_after_3.5_years': 3.8\r",
+							"}\r",
+							"\r",
+							"for(const key in counters){\r",
+							"    pm.test(`Responce has ${key}`,() =>{\r",
+							"        pm.expect(resp).to.have.property(key)\r",
+							"    })\r",
+							"    if (key != 'person'){\r",
+							"        pm.test(`${key} = ${salary} * ${counters[key]}`,() =>{\r",
+							"            pm.expect(resp[key]).to.eql(counters[key]*salary)\r",
+							"        })\r",
+							"    }\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Dmitriy",
+							"type": "text"
+						},
+						{
+							"key": "age",
+							"value": "30",
+							"type": "text"
+						},
+						{
+							"key": "salary",
+							"value": "1000",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://162.55.220.72:5005/user_info_2",
+					"protocol": "http",
+					"host": [
+						"162",
+						"55",
+						"220",
+						"72"
+					],
+					"port": "5005",
+					"path": [
+						"user_info_2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
